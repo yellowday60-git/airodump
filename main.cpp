@@ -15,7 +15,7 @@ using namespace std;
 
 struct info{
     Mac BSSID;
-    uint8_t PWR;
+    int8_t PWR;
     uint32_t Beacons;
     string ESSID;
 };
@@ -35,7 +35,7 @@ void printInfo(){
     system("clear");
     printf("BSSID              PWR  Beacons    AUTH ESSID\n");
     for(auto it = beacon.begin(); it != beacon.end(); it++){
-        cout << std::string(beaconMap[*it].BSSID) << "   " << (int)(beaconMap[*it].PWR & 0xff) << "   " << (int)(beaconMap[*it].Beacons) << "\t   " << beaconMap[*it].ESSID << endl;;
+        cout << std::string(beaconMap[*it].BSSID) << "   " << (int)(beaconMap[*it].PWR) << "   " << (int)(beaconMap[*it].Beacons) << "\t   " << beaconMap[*it].ESSID << endl;;
     }
     printf("BSSID              PWR  Beacons    AUTH ESSID\n");
     for(auto it = probe.begin(); it != probe.end(); it++){
@@ -72,7 +72,8 @@ int main(int argc, char* argv[]){
         
         
         radioTabHdr* radio = (radioTabHdr *) packet;
-        ieeHdr* iee = (ieeHdr*) (packet + sizeof(radioTabHdr)+14);
+        
+        ieeHdr* iee = (ieeHdr*) (packet + radio->len);
         
         #define OFFSET 12
         if(iee->subtype != BEACON_SUBTYPE && iee->subtype != PROBE_SUBTYPE) continue;
@@ -82,6 +83,7 @@ int main(int argc, char* argv[]){
         char* ssid = (((char*)iee)+BEACON_HEADER_SIZE+OFFSET)+SSID_SIZE;
         // printf("cautch! %X\n",iee->subtype);
         // cout << "BSSID : " << string(iee->bssid) << endl;
+        // printf("PWR : %d\n", radio->antenna);
         // printf("ssid len : %d\n", ssid_len&0xff);
         // for(int i = 0 ; i < ssid_len; i++){
         //     printf("%c ",ssid[i]&0xff);
