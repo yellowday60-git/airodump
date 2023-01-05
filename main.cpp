@@ -35,10 +35,15 @@ void printInfo(){
     system("clear");
     printf("BSSID              PWR  Beacons    AUTH ESSID\n");
     for(auto it = beacon.begin(); it != beacon.end(); it++){
+        if(beaconMap[*it].BSSID == Mac::nullMac())
+            continue;
         cout << std::string(beaconMap[*it].BSSID) << "   " << (int)(beaconMap[*it].PWR) << "   " << (int)(beaconMap[*it].Beacons) << "\t   " << beaconMap[*it].ESSID << endl;;
     }
+    
     printf("BSSID              PWR  Beacons    AUTH ESSID\n");
     for(auto it = probe.begin(); it != probe.end(); it++){
+        if(beaconMap[*it].BSSID == Mac::nullMac())
+            continue;
         cout << std::string(probeMap[*it].BSSID) << " " << probeMap[*it].PWR << " " << probeMap[*it].Beacons << " " << probeMap[*it].ESSID << endl;;
     }
 }
