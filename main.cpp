@@ -92,7 +92,7 @@ int main(int argc, char* argv[]){
         
         string ESSID(ssid, ssid_len);
         info data{iee->bssid, radio->antenna, 0, ESSID};
-        if(iee->bssid == nullMac())
+        if(iee->bssid == Mac::nullMac())
             continue;
         if(PROBE_SUBTYPE == iee->subtype){
             probe.insert(iee->bssid);
